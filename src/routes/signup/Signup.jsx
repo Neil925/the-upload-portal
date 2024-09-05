@@ -15,7 +15,7 @@ export default function Signup() {
   }
 
   return (
-    <div className='container py-5 mx-auto px-4 md:px-10 flex-grow text-white'>
+    <div className='py-5 mx-auto px-4 md:px-10 flex-grow text-white'>
       <div className='min-h-screen'>
         <header className=''>
           <div className='bg-neutral-950 fixed h-full w-full left-0 top-0 z-[-1] bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,#272727,#3E3E3E)]' />
@@ -38,10 +38,10 @@ export default function Signup() {
             </h1>
             <div className='text-3xl font-bold mt-5'>Make files simple.</div>
           </div>
-          <div className='border-2 border-white '>
+          <div className='border-2 border-white row-span-2'>
             <h2 className='font-bold text-3xl'>Demo Zone</h2>
-            <div className='w-full h-96 bg-neutral-800 bg-gradient-to-r from-bgGradientR to-bgGradientL place-content-center flex items-center'>
-              <form className='outline-8 outline-secondary outline-dashed w-[99%] h-[97%] z-[0] grid grid-cols-1 md:grid-cols-2' >
+            <div className='w-full h-2/3 bg-neutral-800 bg-gradient-to-r from-bgGradientR to-bgGradientL place-content-center flex items-center'>
+              <form className='outline-8 outline-secondary outline-dashed w-[99%] h-[99%] z-[0] grid grid-cols-1 md:grid-cols-2' >
                 <FaFile className='text-white text-8xl self-center mx-auto' />
                 <div className='self-center mx-auto'>
                   <p id='demo-filename'>No File Submitted</p>
@@ -65,6 +65,11 @@ export default function Signup() {
                 </div>
               </form>
             </div>
+          </div>
+          <div className='place-content-center align-bottom flex gap-3 border-2 border-white h-96'>
+            <div className='bg-secondary w-fit font-bold text-3xl text-center p-2 rounded-xl self-center aspect-square'>Share<br />with<br />anyone</div>
+            <div className='bg-primary w-fit font-bold text-lg text-center p-2 rounded-xl self-center translate-y-11 aspect-square'>Fast<br />download</div>
+            <div className='bg-secondary w-fit font-bold text-2xl text-center p-2 rounded-xl self-center -translate-y-11 aspect-square'>Fully<br />encrypted<br />files</div>
           </div>
         </main>
       </div>
