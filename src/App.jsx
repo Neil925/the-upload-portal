@@ -1,10 +1,10 @@
-import { Routes, Route, Outlet } from "react-router";
+import { Routes, Route, Outlet, redirect, Navigate } from "react-router";
 import Signup from "./routes/signup/Signup";
 
 function App() {
   return (
     <Routes>
-      <Route index element={<h1>WIP</h1>} />
+      <Route index element={<Navigate to={"./signup"} />} />
       <Route path="/signup" element={<Signup />} />
     </Routes>
   );
