@@ -1,45 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { FaFile } from "react-icons/fa";
 import { FaFileArrowUp } from "react-icons/fa6";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 export default function DemoUpload() {
-  /**@type {HTMLSpanElement}*/
-  let nameSpan;
-  /**@type {HTMLSpanElement}*/
-  let sizeSpan;
-  /**@type {HTMLSpanElement}*/
-  let fileTypeSpan;
-  /**@type {HTMLInputElement}*/
-  let fileInputElement;
-  /**@type {HTMLInputElement}*/
-  let sizeInputElement;
-  /**@type {HTMLParagraphElement}*/
-  let slideTextEl;
+  /**@type {React.MutableRefObject<HTMLSpanElement>}*/
+  let nameSpan = useRef(null);
+  /**@type {React.MutableRefObject<HTMLSpanElement>}*/
+  let sizeSpan = useRef(null);
+  /**@type {React.MutableRefObject<HTMLSpanElement>}*/
+  let fileTypeSpan = useRef(null);
+  /**@type {React.MutableRefObject<HTMLInputElement>}*/
+  let fileInputElement = useRef(null);
+  /**@type {React.MutableRefObject<HTMLInputElement>}*/
+  let sizeInputElement = useRef(null);
+  /**@type {React.MutableRefObject<HTMLLabelElement>}*/
+  let slideTextEl = useRef(null);
+  /**@type {React.MutableRefObject<HTMLParagraphElement>}*/
+  let sizeSafety = useRef(null);
+  /**@type {React.MutableRefObject<HTMLDivElement>}*/
+  let expirationEl = useRef(null);
 
   const [sliderSize, setSliderSize] = useState(230000000);
 
-  useEffect(() => {
-    nameSpan = document.querySelector("#demo-filename");
-    sizeSpan = document.querySelector("#demo-filesize");
-    fileTypeSpan = document.querySelector("#demo-filetype");
-    fileInputElement = document.querySelector("#demo-input");
-    sizeInputElement = document.querySelector("#demo-slider");
-    slideTextEl = document.querySelector("#demo-slider-text");
-  });
+  function handleExpiration(ev) {
+    expirationEl.current.textContent = ev.target.value;
+  }
 
   function fileInput(_) {
-    if (fileInputElement.files.length === 1)
-      updateForFile(fileInputElement.files[0]);
+    let el = fileInputElement.current;
+    if (el.files.length === 1)
+      updateForFile(el.files[0]);
+  }
+
+  function handleSliderChange(ev) {
+    ev.preventDefault();
+    updateFileSizeTester(ev.target.value);
   }
 
   function dragOver(ev) {
     ev.preventDefault();
   }
 
-  /**
-    * @param {import('react').DragEventHandler<HTMLDivElement>} ev
-    */
+  /**@param {import('react').DragEventHandler<HTMLDivElement>} ev*/
   function fileDrop(ev) {
     ev.preventDefault();
     ev.stopPropagation();
@@ -49,7 +52,7 @@ export default function DemoUpload() {
 
   function fileSizeToString(size) {
     if (size >= 1000000000)
-      return `${(size / 1000000000, 2).toFixed(2)} Gb`;
+      return `${(size / 1000000000).toFixed(2)} Gb`;
     else if (size >= 1000000)
       return `${(size / 1000000).toFixed(2)} Mb`;
     else if (size >= 1000)
@@ -60,17 +63,34 @@ export default function DemoUpload() {
 
   /**@param {File} file*/
   function updateForFile(file) {
-    nameSpan.innerText = file.name;
-    sizeSpan.innerText = fileSizeToString(file.size);
-    fileTypeSpan.innerText = file.type;
+    nameSpan.current.innerText = file.name;
+    sizeSpan.current.innerText = fileSizeToString(file.size);
+    fileTypeSpan.current.innerText = file.type;
 
     updateFileSizeTester(file.size);
   }
 
   /**@param {number} size*/
   function updateFileSizeTester(size) {
-    sizeInputElement.value = size;
-    slideTextEl.innerText = fileSizeToString(size);
+    setSliderSize(size);
+
+    const inputElement = sizeInputElement.current;
+    const safetyEl = sizeSafety.current;
+
+    inputElement.value = size;
+    slideTextEl.current.innerText = fileSizeToString(size);
+
+    if (size > 3000000000) {
+      safetyEl.textContent = "Too big!";
+      safetyEl.classList.remove("text-green-400");
+      safetyEl.classList.add("text-red-600");
+
+      inputElement.setCustomValidity("Too big!");
+    } else {
+      safetyEl.textContent = "Safe";
+      safetyEl.classList.remove("text-red-600");
+      safetyEl.classList.add("text-green-400");
+    }
   }
 
   return (
@@ -78,62 +98,68 @@ export default function DemoUpload() {
       <div className='h-3/4 '>
         <h2 className='font-bold text-3xl h-[10%]'>Demo Zone</h2>
         <div className='w-full h-[90%] bg-neutral-800 bg-gradient-to-r from-bgGradientR to-bgGradientL place-content-center flex items-center'>
-          <form className='outline-8 outline-secondary outline-dashed w-[99%] h-[99%] z-[0] grid grid-cols-1 md:grid-cols-2' >
-            <FaFile className='text-white text-6xl lg:text-8xl self-center mx-auto' />
-            <div className='self-center h-full w-full flex items-center place-content-center lg:place-content-start'>
-              <div className='text-xl font-mono'>
-                <p id='demo-filename' className='font-bold text-3xl'>No File Submitted</p>
-                <p><b>File size: </b><span id='demo-filesize'></span></p>
-                <p><b>File type: </b><span id='demo-filetype'></span></p>
-              </div>
-            </div>
-            <div className='flex justify-center lg:col-span-2'>
-              <div className='w-1/2 flex justify-center items-center'>
-                <div className='w-32 lg:w-48 h-12 place-content-center'>
-                  <select
-                    className='z-50 absolute w-32 lg:w-48 h-12 text-right p-2 appearance-none bg-transparent text-xl font-bold'
-                    name="expiration" id="demo-expiration">
-                    <option value={1800}>30 minutes</option>
-                    <option value={3600}>1 hour</option>
-                    <option value={86400}>1 day</option>
-                    <option value={604800}>1 week</option>
-                    <option value={2592000}>1 month</option>
-                  </select>
-                  <div className='flex h-full'>
-                    <div
-                      className='bg-primary rounded-l-xl p-2 border-r-4 border-black h-full w-1/4 text-5xl font-bold items-center flex'
-                    ><RiArrowDropDownLine /></div>
-                    <div for="experation" className='w-3/4 text-right bg-primary rounded-r-xl p-2 h-full font-bold' />
+
+          <form onDragOver={dragOver} className="w-full h-full">
+
+            <input type="file" ref={fileInputElement} hidden id='demo-input'
+              onChange={fileInput}
+            />
+            <label htmlFor="demo-input" onDragOver={dragOver} onDrop={fileDrop}>
+              <div className='outline-8 outline-secondary outline-dashed w-[99%] h-[99%] z-[0] grid grid-cols-1 md:grid-cols-2'>
+                <FaFile className='text-white text-6xl lg:text-8xl self-center mx-auto' />
+                <div className='self-center h-full w-full flex items-center place-content-center lg:place-content-start'>
+                  <div className='text-xl font-mono'>
+                    <p ref={nameSpan} className='font-bold text-3xl'>No File Submitted</p>
+                    <p><b>File size: </b><span ref={sizeSpan}></span></p>
+                    <p><b>File type: </b><span ref={fileTypeSpan}></span></p>
+                  </div>
+                </div>
+                <div className='flex justify-center lg:col-span-2'>
+                  <div className='w-1/2 flex justify-center items-center'>
+                    <div className='w-32 lg:w-48 h-12 place-content-center'>
+                      <select
+                        className='z-50 absolute w-32 lg:w-48 h-12 text-right p-2 appearance-none bg-transparent text-transparent'
+                        name="expiration" id="demo-expiration" onChange={handleExpiration} defaultValue="30 minutes">
+                        <option value="30 minutes">30 minutes</option>
+                        <option value="1 hour">1 hour</option>
+                        <option value="1 day">1 day</option>
+                        <option value="1 week">1 week</option>
+                        <option value="1 month">1 month</option>
+                      </select>
+                      <div className='flex h-full'>
+                        <div
+                          className='bg-primary rounded-l-xl p-2 border-r-4 border-black h-full w-1/4 text-8xl font-bold items-center flex'
+                        ><RiArrowDropDownLine /></div>
+                        <div htmlFor="experation" ref={expirationEl}
+                          className='text-center text-nowrap overflow-clip text-xl md:text-2xl w-3/4 bg-primary rounded-r-xl p-2 h-full font-bold'>
+                          30 minutes
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='w-1/2 place-content-center'>
+                    <div className='text-right bg-primary rounded-lg p-3 lg:p-5 h-fit text-xl flex items-center w-fit cursor-pointer'
+                    >
+                      <FaFileArrowUp className='text-4xl md:text-5xl lg:text-6xl' />
+                      <b className='text-2xl md:text-3xl lg:text-5xl ml-5 w-full text-center select-none'>Upload</b>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className='w-1/2 place-content-center p-2'>
-                <input type="file" id="demo-input" hidden
-                  onChange={fileInput}
-                />
-                <label for="demo-input">
-                  <div onDragOver={dragOver} onDrop={fileDrop}
-                    className='text-right bg-primary rounded-lg p-3 lg:p-5 h-fit text-xl flex items-center w-fit cursor-pointer'
-
-                  >
-                    <FaFileArrowUp className='text-4xl md:text-5xl lg:text-6xl' />
-                    <b className='text-2xl md:text-3xl lg:text-5xl ml-5 w-full text-center'>Upload</b>
-                  </div>
-                </label>
-              </div>
-            </div>
+            </label>
           </form>
         </div>
       </div>
       <div className='place-content-center h-1/4'>
-        <p className='flex justify-between'>
+        <div className='flex justify-between'>
           <h3 className='font-bold text-3xl'>File Size Tester</h3>
-          <p className='font-bold text-xl text-green-400'>Safe</p>
-        </p>
-        <div className='bg-primary place-content-center p-2 rounded-lg flex'>
-          <input className='w-5/6'
-            type="range" min="1" max="5000000000" value="230000000" onChange={val => setSliderSize(val)} id="demo-slider" name='demo-slider' step="1000000" />
-          <label htmlFor='demo-slider' className='w-1/6 font-bold text-center text-2xl' id='demo-slider-text'>230 mb</label>
+          <p className='font-bold text-xl text-green-400' ref={sizeSafety}>Safe</p>
+        </div>
+        <div className='bg-primary place-content-center p-2 rounded-lg flex justify-between'>
+          <input className='w-4/5'
+            type="range" min={1} max={5000000000} defaultValue={230000000}
+            onChange={handleSliderChange} ref={sizeInputElement} name='demo-slider' />
+          <label htmlFor='demo-slider' className='min-w-fit font-bold font-mono text-center text-2xl' ref={slideTextEl}>230 mb</label>
         </div>
       </div>
     </div>

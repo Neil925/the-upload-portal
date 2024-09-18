@@ -1,21 +1,33 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 export default function PopupForm({ trigger }) {
-  console.log(trigger);
-
   useEffect(() => {
     if (trigger === 0) return;
 
     showModal();
   }, [trigger]);
 
-  const showModal = () => {
-    let el = document.querySelector("dialog");
-    el.showModal();
-  }
+  useEffect(() => {
+    let el = dialogRef.current;
+
+    el.addEventListener('click', function(event) {
+      let rect = el.getBoundingClientRect();
+      let isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
+      if (!isInDialog) {
+        el.close();
+      }
+    });
+  })
+
+  /**@type {import('react').MutableRefObject<HTMLDialogElement>}*/
+  const dialogRef = useRef(null);
+
+  const showModal = () => dialogRef.current.showModal();
+
 
   return (
-    <dialog
+    <dialog ref={dialogRef}
       className='bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80'>
       <form className=''>
         <h3 className='font-bold text-3xl mb-5'>Create Account</h3>
