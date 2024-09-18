@@ -6,7 +6,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 export default function DemoUpload() {
 
   /** @param {MouseEvent} ev **/
-  function handleButton(ev) {
+  function submitFile(ev) {
     ev.preventDefault();
     let selectEl = document.querySelector("select");//#demo-expiration
     //HACK: Might have to go about this differently.
@@ -48,11 +48,14 @@ export default function DemoUpload() {
                 </div>
               </div>
               <div className='w-1/2 place-content-center p-2'>
-                <button
-                  className='text-right bg-primary rounded-lg p-3 lg:p-5 h-fit text-xl flex items-center'>
-                  <FaFileArrowUp className='text-4xl md:text-5xl lg:text-6xl' />
-                  <b className='text-2xl md:text-3xl lg:text-5xl ml-5 w-full text-center'>Upload</b>
-                </button>
+                <input type="file" id="demo-upload" hidden />
+                <label for="demo-upload">
+                  <button onClick={submitFile}
+                    className='text-right bg-primary rounded-lg p-3 lg:p-5 h-fit text-xl flex items-center'>
+                    <FaFileArrowUp className='text-4xl md:text-5xl lg:text-6xl' />
+                    <b className='text-2xl md:text-3xl lg:text-5xl ml-5 w-full text-center'>Upload</b>
+                  </button>
+                </label>
               </div>
             </div>
           </form>
