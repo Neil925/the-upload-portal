@@ -1,15 +1,76 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaFile } from "react-icons/fa";
 import { FaFileArrowUp } from "react-icons/fa6";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 export default function DemoUpload() {
+  /**@type {HTMLSpanElement}*/
+  let nameSpan;
+  /**@type {HTMLSpanElement}*/
+  let sizeSpan;
+  /**@type {HTMLSpanElement}*/
+  let fileTypeSpan;
+  /**@type {HTMLInputElement}*/
+  let fileInputElement;
+  /**@type {HTMLInputElement}*/
+  let sizeInputElement;
+  /**@type {HTMLParagraphElement}*/
+  let slideTextEl;
 
-  /** @param {MouseEvent} ev **/
-  function submitFile(ev) {
+  const [sliderSize, setSliderSize] = useState(230000000);
+
+  useEffect(() => {
+    nameSpan = document.querySelector("#demo-filename");
+    sizeSpan = document.querySelector("#demo-filesize");
+    fileTypeSpan = document.querySelector("#demo-filetype");
+    fileInputElement = document.querySelector("#demo-input");
+    sizeInputElement = document.querySelector("#demo-slider");
+    slideTextEl = document.querySelector("#demo-slider-text");
+  });
+
+  function fileInput(_) {
+    if (fileInputElement.files.length === 1)
+      updateForFile(fileInputElement.files[0]);
+  }
+
+  function dragOver(ev) {
     ev.preventDefault();
-    let selectEl = document.querySelector("select");//#demo-expiration
-    //HACK: Might have to go about this differently.
+  }
+
+  /**
+    * @param {import('react').DragEventHandler<HTMLDivElement>} ev
+    */
+  function fileDrop(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    updateForFile(ev.dataTransfer.files[0]);
+  }
+
+  function fileSizeToString(size) {
+    if (size >= 1000000000)
+      return `${(size / 1000000000, 2).toFixed(2)} Gb`;
+    else if (size >= 1000000)
+      return `${(size / 1000000).toFixed(2)} Mb`;
+    else if (size >= 1000)
+      return `${(size / 1000).toFixed(2)} Kb`;
+    else
+      return `${(size)} bytes`;
+  }
+
+  /**@param {File} file*/
+  function updateForFile(file) {
+    nameSpan.innerText = file.name;
+    sizeSpan.innerText = fileSizeToString(file.size);
+    fileTypeSpan.innerText = file.type;
+
+    updateFileSizeTester(file.size);
+  }
+
+  /**@param {number} size*/
+  function updateFileSizeTester(size) {
+    sizeInputElement.value = size;
+    slideTextEl.innerText = fileSizeToString(size);
   }
 
   return (
@@ -21,7 +82,7 @@ export default function DemoUpload() {
             <FaFile className='text-white text-6xl lg:text-8xl self-center mx-auto' />
             <div className='self-center h-full w-full flex items-center place-content-center lg:place-content-start'>
               <div className='text-xl font-mono'>
-                <p id='demo-filename'><b>No File Submitted</b></p>
+                <p id='demo-filename' className='font-bold text-3xl'>No File Submitted</p>
                 <p><b>File size: </b><span id='demo-filesize'></span></p>
                 <p><b>File type: </b><span id='demo-filetype'></span></p>
               </div>
@@ -41,20 +102,23 @@ export default function DemoUpload() {
                   <div className='flex h-full'>
                     <div
                       className='bg-primary rounded-l-xl p-2 border-r-4 border-black h-full w-1/4 text-5xl font-bold items-center flex'
-                      onClick={handleButton}
                     ><RiArrowDropDownLine /></div>
                     <div for="experation" className='w-3/4 text-right bg-primary rounded-r-xl p-2 h-full font-bold' />
                   </div>
                 </div>
               </div>
               <div className='w-1/2 place-content-center p-2'>
-                <input type="file" id="demo-upload" hidden />
-                <label for="demo-upload">
-                  <button onClick={submitFile}
-                    className='text-right bg-primary rounded-lg p-3 lg:p-5 h-fit text-xl flex items-center'>
+                <input type="file" id="demo-input" hidden
+                  onChange={fileInput}
+                />
+                <label for="demo-input">
+                  <div onDragOver={dragOver} onDrop={fileDrop}
+                    className='text-right bg-primary rounded-lg p-3 lg:p-5 h-fit text-xl flex items-center w-fit cursor-pointer'
+
+                  >
                     <FaFileArrowUp className='text-4xl md:text-5xl lg:text-6xl' />
                     <b className='text-2xl md:text-3xl lg:text-5xl ml-5 w-full text-center'>Upload</b>
-                  </button>
+                  </div>
                 </label>
               </div>
             </div>
@@ -68,8 +132,8 @@ export default function DemoUpload() {
         </p>
         <div className='bg-primary place-content-center p-2 rounded-lg flex'>
           <input className='w-5/6'
-            type="range" min="1" max="100" value="50" id="fileSizeSlider" />
-          <p className='w-1/6 font-bold text-center text-2xl'>230 mb</p>
+            type="range" min="1" max="5000000000" value="230000000" onChange={val => setSliderSize(val)} id="demo-slider" name='demo-slider' step="1000000" />
+          <label htmlFor='demo-slider' className='w-1/6 font-bold text-center text-2xl' id='demo-slider-text'>230 mb</label>
         </div>
       </div>
     </div>
