@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import PopupForm from '../../modules/popupform/Popupform';
 import Logo from "../../resources/Logo.png";
 import DemoUpload from '../../modules/DemoUpload';
-import placeHolder from '../../resources/placeholder.png';
-import video from '../../resources/SaveClip.App_994B7C08A3A6CE8A66AE9E0946A7DDB9_video_dashinit.mov';
+import img1 from '../../resources/img1.png';
+import img2 from '../../resources/img2.png';
+import img3 from '../../resources/img3.png';
 
 export default function Signup() {
   const [trigger, setTrigger] = useState(0);
@@ -11,9 +12,9 @@ export default function Signup() {
   return (
     <div className='flex-grow text-white'>
       <PopupForm trigger={trigger} />
-      <header className='pt-5 mx-auto px-4 md:px-10'>
+      <header className='pt-5 mx-auto px-4 md:px-10 h-[5vh] lg:h-[10vh]'>
         <div className='bg-neutral-950 fixed h-full w-full left-0 top-0 z-[-1] bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,#272727,#3E3E3E)]' />
-        <nav className='flex w-full justify-between'>
+        <nav className='flex w-full justify-between '>
           <img className='w-32 md:w-52 object-contain' alt="Logo" src={Logo} />
           <div className='place-content-center'>
             <button
@@ -46,20 +47,19 @@ export default function Signup() {
             ><p>Fully<br />encrypted<br />files</p></div>
           </div>
         </div>
-        <div className='bg-secondary w-full lg:h-[70vh] justify-center p-4'>
-          <div className='flex flex-col space-y-10 md:flex-row h-full justify-evenly md:place-content-center place-items-center'>
+        <div className='bg-secondary w-full lg:min-h-screen justify-center p-4'>
+          <h2 className='font-bold text-3xl md:text-5xl m-5 pb-5 lg:ml-28'>See What It's Like</h2>
+          <div className='flex flex-col space-y-10 md:flex-row lg:mt-16 h-full justify-evenly md:place-content-center place-items-center pb-5'>
             <div className='w-full md:w-1/2 space-y-3 pr-2'>
               <div className='flex flex-wrap gap-3 justify-center'>
-                <img alt='img' src={placeHolder} className='w-40 md:w-1/3 self-stretch' />
-                <img alt='img' src={placeHolder} className='w-40 md:w-1/3 self-stretch' />
-                <img alt='img' src={placeHolder} className='w-40 md:w-1/3 self-stretch' />
-                <img alt='img' src={placeHolder} className='w-40 md:w-1/3 self-stretch' />
-                <img alt='img' src={placeHolder} className='w-40 md:w-1/3 self-stretch' />
+                <img alt='img' src={img1} className='w-40 object-contain aspect md:w-1/3 self-stretch' />
+                <img alt='img' src={img2} className='w-40 object-contain md:w-1/3 self-stretch' />
+                <img alt='img' src={img3} className='w-40 object-contain md:w-1/3 self-stretch' />
               </div>
             </div>
             <div className='w-full md:w-1/2 flex justify-center items-center pl-2'>
-              <video alt='demo-video' className='border-2 border-white w-full' controls >
-                <source src={video} />
+              <video alt='demo-video' className='drop-shadow-[0px_0px_5px_rgba(255,255,255,0.9)] w-full rounded-md' autoPlay loop muted>
+                <source src='/demo.mp4' />
               </video >
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet, redirect, Navigate } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import Signup from "./routes/signup/Signup";
 
 function App() {
