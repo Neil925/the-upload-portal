@@ -1,0 +1,23 @@
+{
+  "name": "upload-portal-api",
+  "version": "0.1.0",
+  "main": "server.ts",
+  "type": "module",
+  "scripts": {
+    "start": "node --watch --env-file=.env --experimental-strip-types .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/mysql": "^2.15.26",
+    "@types/node": "^22.7.5"
+  }
+}
