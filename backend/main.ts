@@ -80,7 +80,7 @@ function main() {
     res.status(400).send("Bad email or password.");
   });
 
-  app.listen(3000);
+  app.listen(process.env.PORT);
 
   console.log(`Hello, ${process.env.MYSQL_USER}`);
 }
