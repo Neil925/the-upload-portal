@@ -24,6 +24,9 @@ export default function PopupForm({ trigger }) {
   /**@type {import('react').MutableRefObject<HTMLDialogElement>}*/
   const dialogRef = useRef(null);
 
+  /**@type {import('react').MutableRefObject<HTMLFormElement>}*/
+  const formRef = useRef(null);
+
   /**@type {import('react').MutableRefObject<HTMLInputElement>}*/
   const unameRef = useRef(null);
 
@@ -49,6 +52,7 @@ export default function PopupForm({ trigger }) {
 
   const [validForm, setValidForm] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const showModal = () => dialogRef.current.showModal();
 
@@ -129,8 +133,6 @@ export default function PopupForm({ trigger }) {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
 
-    console.log(data);
-
     const response = await fetch(`/createuser`, {
       method: "POST",
       body: JSON.stringify(data),
@@ -138,19 +140,37 @@ export default function PopupForm({ trigger }) {
     });
 
     if (response.ok) {
-      dialogRef.current.close();
+      formRef.current.classList.add("collapse");
+      setSuccess("Sign up Successful!");
+
+      setTimeout(() => {
+        dialogRef.current.close();
+        formRef.current.classList.remove("collapse");
+        setSuccess(null);
+      }, 3000);
+
       return;
     }
 
-    setError(`Could not sign up!\n${response.status} ${response.statusText}`);
+    let text = await response.text();
+
+    if (text === "User already exists!") {
+      setError("This account already exists.")
+      return;
+    }
+
+    setError(`Could not sign up!\n${response.status} ${text}`);
   };
 
   return (
     <dialog
       ref={dialogRef}
-      className="bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80"
+      className="bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80 overflow-clip"
     >
-      <form className="" >
+      {success && <div className="h-full w-full text-3xl text-green-500 font-bold flex justify-center items-center align-middle ">
+        {success}
+      </div>}
+      <form ref={formRef}>
         <h3 className="font-bold text-3xl mb-5">Create Account</h3>
         <fieldset className="flex flex-col space-y-5">
           <input

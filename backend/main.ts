@@ -39,6 +39,25 @@ function main() {
       return;
     }
 
+    if (newUser.email.match(/.*@.*\..*/) === null) {
+      res.status(400).send("Invalid email.");
+      return;
+    }
+
+    const bday = new Date(newUser.birthday);
+
+    if (isNaN(bday.valueOf())) {
+      res.status(400).send("Invalid birthdate.");
+      return;
+    }
+
+    const age = new Date(Date.now()).getFullYear() - bday.getFullYear();
+
+    if (age < 16 || age > 110) {
+      res.status(400).send("Invalid birthdate.");
+      return;
+    }
+
     if (await userExists(newUser)) {
       res.status(400).send("User already exists!");
       return;
