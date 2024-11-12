@@ -45,22 +45,24 @@ export default function Signup() {
             </div>
           </div>
           <DemoUpload />
-          <div className="place-content-center font-bold align-bottom flex gap-3 min-h-fit">
-            <div className="bg-secondary text-lg lg:text-3xl text-center p-2 rounded-xl self-center aspect-square place-items-center w-24 lg:w-fit flex justify-center items-center">
-              <p>
-                Share<br />with<br />anyone
-              </p>
-            </div>
-            <div className="bg-primary text-lg text-center p-2 rounded-xl self-center mt-24 aspect-square flex justify-center items-center">
+          <div className="font-bold flex gap-2 justify-center lg:justify-start min-h-fit items-end mb-5 lg:space-x-5">
+            <div className="bg-primary p-2 rounded-xl aspect-square w-16 " />
+            <div className="bg-secondary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square place-items-center w-28 lg:w-fit flex justify-center items-center">
               <p>
                 Fast<br />download
               </p>
             </div>
-            <div className="bg-secondary text-2xl text-center p-2 rounded-xl self-center mb-24 aspect-square place-items-center flex justify-center items-center">
+            <div className="bg-primary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square flex justify-center items-center w-36">
+              <p>
+                Share<br />with<br />anyone
+              </p>
+            </div>
+            <div className="bg-secondary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square place-items-center flex justify-center items-center w-28">
               <p>
                 Fully<br />encrypted<br />files
               </p>
             </div>
+            <div className="bg-primary p-2 rounded-xl aspect-square w-16" />
           </div>
         </div>
         <div className="bg-secondary w-full lg:min-h-screen justify-center p-4">
