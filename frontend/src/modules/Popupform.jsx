@@ -10,7 +10,7 @@ export default function PopupForm({ trigger }) {
   useEffect(() => {
     const el = dialogRef.current;
 
-    el.addEventListener("click", function(event) {
+    el.addEventListener("click", function (event) {
       const rect = el.getBoundingClientRect();
       const isInDialog = rect.top <= event.clientY &&
         event.clientY <= rect.top + rect.height &&
@@ -42,13 +42,11 @@ export default function PopupForm({ trigger }) {
   /**@type {import('react').MutableRefObject<HTMLInputElement>}*/
   const birthRef = useRef(null);
 
-  const [data, setData] = useState({
-    username: undefined,
-    email: undefined,
-    password: undefined,
-    rePassword: undefined,
-    birthday: undefined,
-  });
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, SetRePassword] = useState("");
+  const [birthday, setBirthday] = useState("");
 
   const [validForm, setValidForm] = useState(false);
   const [error, setError] = useState(null);
@@ -56,15 +54,15 @@ export default function PopupForm({ trigger }) {
 
   const showModal = () => dialogRef.current.showModal();
 
-  useEffect(() => {
-    if (data.username && data.email && data.password && data.password === data.rePassword && data.birthday) {
+  function validated() {
+    if (username && email && password && password === rePassword && birthday) {
       setValidForm(true);
       setError(null);
       return;
     }
 
     setValidForm(false);
-  }, [data]);
+  }
 
   /**@param {HTMLInputElement} target*/
   const makeValid = (target) => {
@@ -135,13 +133,19 @@ export default function PopupForm({ trigger }) {
 
     const response = await fetch(`/createuser`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ username, email, password, birthday }),
       headers: { "Content-type": "application/json" },
     });
 
     if (response.ok) {
       formRef.current.classList.add("collapse");
       setSuccess("Sign up Successful!");
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      SetRePassword("");
+      setBirthday("");
 
       setTimeout(() => {
         dialogRef.current.close();
@@ -165,7 +169,7 @@ export default function PopupForm({ trigger }) {
   return (
     <dialog
       ref={dialogRef}
-      className="bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80 overflow-clip"
+      className="bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80 overflow-clip max-w-[95vw] md:max-w-[80vw] lg:max-w-[500px]"
     >
       {success && <div className="h-full w-full text-3xl text-green-500 font-bold flex justify-center items-center align-middle ">
         {success}
@@ -181,7 +185,8 @@ export default function PopupForm({ trigger }) {
             placeholder="Username"
             required
             className="rounded-lg bg-neutral-500 p-2 invalid:border-red"
-            onChange={(x) => setData({ ...data, username: x.target.value })}
+            value={username}
+            onChange={x => { setUsername(x.target.value); validated(); }}
           />
           <input
             ref={emailRef}
@@ -191,7 +196,8 @@ export default function PopupForm({ trigger }) {
             placeholder="Email"
             required
             className="rounded-lg bg-neutral-500 p-2 invalid:border-red"
-            onChange={(x) => setData({ ...data, email: x.target.value })}
+            value={email}
+            onChange={x => { setEmail(x.target.value); validated() }}
           />
           <input
             ref={passRef}
@@ -201,7 +207,8 @@ export default function PopupForm({ trigger }) {
             placeholder="Password"
             required
             className="rounded-lg bg-neutral-500 p-2 invalid:border-red"
-            onChange={(x) => setData({ ...data, password: x.target.value })}
+            value={password}
+            onChange={x => { setPassword(x.target.value); validated() }}
           />
           <input
             ref={rePassRef}
@@ -211,7 +218,8 @@ export default function PopupForm({ trigger }) {
             placeholder="Re-type password"
             required
             className="rounded-lg bg-neutral-500 p-2 "
-            onChange={(x) => setData({ ...data, rePassword: x.target.value })}
+            value={rePassword}
+            onChange={x => { SetRePassword(x.target.value); validated() }}
           />
           <input
             ref={birthRef}
@@ -220,7 +228,8 @@ export default function PopupForm({ trigger }) {
             name="birthday"
             required
             className="rounded-lg bg-neutral-500 p-2 invalid:border-red"
-            onChange={(x) => setData({ ...data, birthday: x.target.value })}
+            value={birthday}
+            onChange={x => { setBirthday(x.target.value); validated() }}
           />
           {error && <div className="text-red-500">{error}</div>}
           <button

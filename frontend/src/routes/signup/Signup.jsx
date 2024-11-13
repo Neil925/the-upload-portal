@@ -45,7 +45,7 @@ export default function Signup() {
             </div>
           </div>
           <DemoUpload />
-          <div className="font-bold flex gap-2 justify-center lg:justify-start min-h-fit items-end mb-5 lg:space-x-5">
+          <div className="font-bold flex gap-2 justify-center pr-5 lg:justify-start min-h-fit items-end mb-5 lg:space-x-5">
             <div className="bg-primary p-2 rounded-xl aspect-square w-16 " />
             <div className="bg-secondary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square place-items-center w-28 lg:w-fit flex justify-center items-center">
               <p>
