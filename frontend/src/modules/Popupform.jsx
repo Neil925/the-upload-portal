@@ -138,7 +138,7 @@ export default function PopupForm({ trigger }) {
     });
 
     if (response.ok) {
-      formRef.current.classList.add("collapse");
+      formRef.current.classList.add("hidden");
       setSuccess("Sign up Successful!");
 
       setUsername("");
@@ -149,8 +149,9 @@ export default function PopupForm({ trigger }) {
 
       setTimeout(() => {
         dialogRef.current.close();
-        formRef.current.classList.remove("collapse");
+        formRef.current.classList.remove("hidden");
         setSuccess(null);
+        setError(null);
       }, 3000);
 
       return;
@@ -169,12 +170,16 @@ export default function PopupForm({ trigger }) {
   return (
     <dialog
       ref={dialogRef}
-      className="bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80 overflow-clip max-w-[95vw] md:max-w-[80vw] lg:max-w-[500px]"
+      onKeyDown={ev => {
+        if (ev.key === "Enter")
+          handleSubmit(ev);
+      }}
+      className="bg-neutral-700 p-4 rounded-lg text-white backdrop:bg-black backdrop:bg-opacity-80 overflow-clip max-w-[95vw] md:max-w-[80vw] lg:max-w-[500px] h-fit"
     >
-      {success && <div className="h-full w-full text-3xl text-green-500 font-bold flex justify-center items-center align-middle ">
+      {success && <div className="text-3xl text-green-500 text-center font-bold h-24 place-content-center">
         {success}
       </div>}
-      <form ref={formRef}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <h3 className="font-bold text-3xl mb-5">Create Account</h3>
         <fieldset className="flex flex-col space-y-5">
           <input

@@ -61,15 +61,15 @@ export default function DemoUpload() {
       return;
     }
 
+    selectState = true;
     drpDwnCtrls.stop();
     drpDwnCtrls.start({ scaleY: -1 });
-    selectState = true;
   }
 
   function selectEnd() {
+    selectState = false;
     drpDwnCtrls.stop();
     drpDwnCtrls.start({ scaleY: 1 });
-    selectState = false;
   }
 
   function handleExpiration(ev) {
@@ -232,7 +232,7 @@ export default function DemoUpload() {
                 <div className='flex justify-center md:col-span-2'>
                   <div className='w-1/2 flex justify-center items-center'>
                     <div className='w-32 md:w-48 h-12 place-content-center'>
-                      <select onClick={selectStart}
+                      <select onClick={selectStart} onfocusout={selectEnd}
                         className='z-50 absolute w-32 md:w-48 h-12 text-right cursor-pointer p-2 appearance-none bg-transparent text-transparent'
                         name="expiration" id="demo-expiration" onChange={handleExpiration} defaultValue="30 minutes">
                         <option value="30 minutes">30 minutes</option>
@@ -249,7 +249,7 @@ export default function DemoUpload() {
                             <RiArrowDropDownLine className='scale-[3] md:scale-150' />
                           </motion.div>
                         </div>
-                        <label htmlFor="experation" ref={expirationEl}
+                        <label htmlFor="expiration" ref={expirationEl}
                           className='text-center text-nowrap overflow-clip text-xl md:text-2xl w-3/4 bg-primary rounded-r-xl p-2 h-full font-bold'>
                           30 minutes
                         </label>
@@ -271,7 +271,7 @@ export default function DemoUpload() {
                       <motion.div animate={btnIcoCtrls}>
                         {fileState.el}
                       </motion.div>
-                      <b className='text-2xl md:text-4xl ml-5 w-full text-center select-none'>{fileState.text}</b>
+                      <b className='text-xl sm:text-3xl md:text-4xl ml-5 w-full text-center select-none'>{fileState.text}</b>
                     </button>
                   </div>
                 </div>
@@ -290,7 +290,9 @@ export default function DemoUpload() {
             type="range" min={1} max={5000000000} defaultValue={230000000}
             disabled={fileState.text === states.FileSelected.text}
             onChange={handleSliderChange} ref={sizeInputElement} name='demo-slider' />
-          <label htmlFor='demo-slider' className='font-bold font-mono text-center text-lg md:text-2xl w-1/5' ref={slideTextEl}>230 mb</label>
+          <label htmlFor='demo-slider'
+            className='font-bold font-mono text-center text-lg md:text-2xl w-1/5'
+            ref={slideTextEl}>230 mb</label>
         </div>
       </div>
     </div>

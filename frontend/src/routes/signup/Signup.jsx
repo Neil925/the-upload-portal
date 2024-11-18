@@ -46,23 +46,23 @@ export default function Signup() {
           </div>
           <DemoUpload />
           <div className="font-bold flex gap-2 justify-center pr-5 lg:justify-start min-h-fit items-end mb-5 lg:space-x-5">
-            <div className="bg-primary p-2 rounded-xl aspect-square w-16 " />
-            <div className="bg-secondary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square place-items-center w-28 lg:w-fit flex justify-center items-center">
+            <div className="bg-primary p-2 rounded-xl aspect-square size-10 md:size-16 " />
+            <div className="bg-secondary text-sm md:text-xl text-center p-2 rounded-xl size-20 md:size-28 flex justify-center items-center">
               <p>
                 Fast<br />download
               </p>
             </div>
-            <div className="bg-primary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square flex justify-center items-center w-36">
+            <div className="bg-primary text-md md:text-2xl text-center p-2 rounded-xl flex justify-center items-center size-28 md:size-36">
               <p>
                 Share<br />with<br />anyone
               </p>
             </div>
-            <div className="bg-secondary text-sm lg:text-xl text-center p-2 rounded-xl aspect-square place-items-center flex justify-center items-center w-28">
+            <div className="bg-secondary text-sm md:text-xl text-center p-2 rounded-xl size-20 md:size-28 flex justify-center items-center">
               <p>
                 Fully<br />encrypted<br />files
               </p>
             </div>
-            <div className="bg-primary p-2 rounded-xl aspect-square w-16" />
+            <div className="bg-primary p-2 rounded-xl aspect-square size-10 md:size-16" />
           </div>
         </div>
         <div className="bg-secondary w-full lg:min-h-screen justify-center p-4">
@@ -75,17 +75,17 @@ export default function Signup() {
                 <img
                   alt="img"
                   src={img1}
-                  className="w-40 object-contain aspect md:w-1/3 self-stretch"
+                  className="w-40 object-contain aspect md:w-1/3 self-stretch order-1"
                 />
                 <img
                   alt="img"
                   src={img2}
-                  className="w-40 object-contain md:w-1/3 self-stretch"
+                  className="w-40 object-contain md:w-1/3 self-stretch order-3"
                 />
                 <img
                   alt="img"
                   src={img3}
-                  className="w-40 object-contain md:w-1/3 self-stretch"
+                  className="w-40 object-contain md:w-1/3 order-4 self-stretch sm:order-2 md:order-4"
                 />
               </div>
             </div>
